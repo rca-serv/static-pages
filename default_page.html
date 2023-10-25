@@ -67,189 +67,226 @@
             </div>
         </div>
     </div>
-        
-        <!-- MEMO
-            - Windowの最初の子要素はTitileである必要あり
-        -->
-        <script>
-            
-            // 要素の取得
-            const buttons = {
-                primary_hint: document.getElementById("button_primary_hint"),
-                show_reload: document.getElementById("button_reload"),
-                cancel_reload: document.getElementById("button_calcel_reload"),
-                confirm_reload: document.getElementById("button_comfirm_reload")
-            }
-            
-            // イベントの設定
-            // メインウィンドウ
-            // リロードウィンドウの表示
-            buttons.show_reload.addEventListener("click", function() {
-                windows.reload_confirm.show();
-                windows.main.inactivate();
-                windows.reload_confirm.activate();
-            });
-            // ヒントボタン
-            buttons.primary_hint.addEventListener("click", function() {
-                console.log("HINT");
-            });
-            
-            // リロードウィンドウ
-            // Cancelボタン
-            buttons.cancel_reload.addEventListener("click", function() {
-                windows.reload_confirm.hide();
-                windows.main.activate();
-                windows.reload_confirm.inactivate();
-            });
-            // Confirmボタン
-            buttons.confirm_reload.addEventListener("click", function() {
-                location.reload();
-            });
-            
-            
-            // ウィンドウ管理
-            let windows = {
-                main: {
-                    id: "window_main",
-                    show: function() {
-                        showWindow(this.id);
-                    },
-                    hide: function() {
-                        hideWindow(this.id);
-                    },
-                    inactivate: function() {
-                        inactivateWindow(this.id);
-                        window_status.window_main.is_active = false;
-                    },
-                    activate: function() {
-                        activateWindow(this.id);
-                        window_status.window_main.is_active = true;
-                    }
-                },
-                reload_confirm: {
-                    id: "window_reload_confirm",
-                    show: function() {
-                        showWindow(this.id);
-                    },
-                    hide: function() {
-                        hideWindow(this.id);
-                    },
-                    inactivate: function() {
-                        inactivateWindow(this.id);
-                        window_status.window_reload_confirm.is_active = false;
-                    },
-                    activate: function() {
-                        activateWindow(this.id);
-                        window_status.window_reload_confirm.is_active = true;
-                    }
-                }
-            }
-            
-            let window_status = {
-                window_main: {
-                    is_active: true
-                },
-                window_reload_confirm: {
-                    is_active: false
-                }
-            }
-            
-            function showWindow(targetId) {
-                document.getElementById(targetId).style.display = "block";
-            }
-            function hideWindow(targetId) {
-                document.getElementById(targetId).style.display = "none";
-            }
-            function inactivateWindow(targetId) {
-                document.getElementById(targetId).firstElementChild.classList.add("inactive");
-            }
-            function activateWindow(targetId) {
-                document.getElementById(targetId).firstElementChild.classList.remove("inactive");
-            }
-            
-            // Drag and Drop
-            // https://q-az.net/elements-drag-and-drop/
-            (function(){
-                
-                //要素の取得
-                var elements = document.getElementsByClassName("drag-and-drop");
-                
-                //要素内のクリックされた位置を取得するグローバル（のような）変数
-                var x;
-                var y;
-                
-                //マウスが要素内で押されたとき、又はタッチされたとき発火
-                for(var i = 0; i < elements.length; i++) {
-                    elements[i].addEventListener("mousedown", mdown, false);
-                    elements[i].addEventListener("touchstart", mdown, false);
-                }
-                
-                //マウスが押された際の関数
-                function mdown(e) {
-                    
-                    //クラス名に .drag を追加
-                    this.classList.add("drag");
-                    
-                    //タッチデイベントとマウスのイベントの差異を吸収
-                    if(e.type === "mousedown") {
-                        var event = e;
-                    } else {
-                        var event = e.changedTouches[0];
-                    }
-                    
-                    //要素内の相対座標を取得
-                    x = event.pageX - this.offsetLeft;
-                    y = event.pageY - this.offsetTop;
-                    
-                    //ムーブイベントにコールバック
-                    document.body.addEventListener("mousemove", mmove, false);
-                    document.body.addEventListener("touchmove", mmove, false);
-                }
-                
-                //マウスカーソルが動いたときに発火
-                function mmove(e) {
-                    
-                    //ドラッグしている要素を取得
-                    var drag = document.getElementsByClassName("drag")[0];
-                    
-                    //同様にマウスとタッチの差異を吸収
-                    if(e.type === "mousemove") {
-                        var event = e;
-                    } else {
-                        var event = e.changedTouches[0];
-                    }
-                    
-                    //フリックしたときに画面を動かさないようにデフォルト動作を抑制
-                    e.preventDefault();
-                    
-                    //マウスが動いた場所に要素を動かす
-                    drag.style.top = event.pageY - y + "px";
-                    drag.style.left = event.pageX - x + "px";
-                    
-                    //マウスボタンが離されたとき、またはカーソルが外れたとき発火
-                    drag.addEventListener("mouseup", mup, false);
-                    document.body.addEventListener("mouseleave", mup, false);
-                    drag.addEventListener("touchend", mup, false);
-                    document.body.addEventListener("touchleave", mup, false);
-                    
-                }
-                
-                //マウスボタンが上がったら発火
-                function mup(e) {
-                    var drag = document.getElementsByClassName("drag")[0];
-                    
-                    //ムーブベントハンドラの消去
-                    document.body.removeEventListener("mousemove", mmove, false);
-                    drag.removeEventListener("mouseup", mup, false);
-                    document.body.removeEventListener("touchmove", mmove, false);
-                    drag.removeEventListener("touchend", mup, false);
-                    
-                    //クラス名 .drag も消す
-                    drag.classList.remove("drag");
-                }
-                
-            })()
-        </script>
-    </body>
-    </html>
+
+    <div class="window popup_window drag-and-drop" id="window_hint">
+        <div class="title-bar">
+            <div class="title-bar-text">
+                98.css
+            </div>
+        </div>
+        <div class="window-body">
+            <p>ヘルプウィンドああああああああああああああああああうううううううううう</p>
+        </div>  
+    </div>
     
+    <!-- MEMO
+        - Windowの最初の子要素はTitileである必要あり
+    -->
+    <script>
+        
+        // 要素の取得
+        const buttons = {
+            primary_hint: document.getElementById("button_primary_hint"),
+            show_reload: document.getElementById("button_reload"),
+            cancel_reload: document.getElementById("button_calcel_reload"),
+            confirm_reload: document.getElementById("button_comfirm_reload")
+        }
+        
+        // イベントの設定
+        // メインウィンドウ
+        // リロードウィンドウの表示
+        buttons.show_reload.addEventListener("click", function() {
+            windows.reload_confirm.show();
+            windows.main.inactivate();
+            windows.reload_confirm.activate();
+        });
+        // ヒントボタン
+        buttons.primary_hint.addEventListener("click", function() {
+            windows.hint.show();
+            windows.main.inactivate();
+            windows.hint.activate();
+            
+        });
+        
+        // リロードウィンドウ
+        // Cancelボタン
+        buttons.cancel_reload.addEventListener("click", function() {
+            windows.reload_confirm.hide();
+            windows.main.activate();
+            windows.reload_confirm.inactivate();
+        });
+        // Confirmボタン
+        buttons.confirm_reload.addEventListener("click", function() {
+            location.reload();
+        });
+        
+        // ヘルプウィンドウ
+
+        
+        // ウィンドウ
+        let windows = {
+            main: {
+                id: "window_main",
+                show: function() {
+                    showWindow(this.id);
+                },
+                hide: function() {
+                    hideWindow(this.id);
+                },
+                inactivate: function() {
+                    inactivateWindow(this.id);
+                    window_status.window_main.is_active = false;
+                },
+                activate: function() {
+                    activateWindow(this.id);
+                    window_status.window_main.is_active = true;
+                }
+            },
+            reload_confirm: {
+                id: "window_reload_confirm",
+                show: function() {
+                    showWindow(this.id);
+                },
+                hide: function() {
+                    hideWindow(this.id);
+                },
+                inactivate: function() {
+                    inactivateWindow(this.id);
+                    window_status.window_reload_confirm.is_active = false;
+                },
+                activate: function() {
+                    activateWindow(this.id);
+                    window_status.window_reload_confirm.is_active = true;
+                }
+            },
+            hint: {
+                id: "window_hint",
+                show: function() {
+                    showWindow(this.id);
+                },
+                hide: function() {
+                    hideWindow(this.id);
+                },
+                inactivate: function() {
+                    inactivateWindow(this.id);
+                    window_status.window_hint.is_active = false;
+                },
+                activate: function() {
+                    activateWindow(this.id);
+                    window_status.window_hint.is_active = true;
+                }
+            }
+        }
+        
+        // ウィンドウ状態管理
+        let window_status = {
+            window_main: {
+                is_active: true
+            },
+            window_reload_confirm: {
+                is_active: false
+            },
+            window_hint: {
+                is_active: false
+            }
+        }
+        
+        // ウィンドウ操作関数
+        function showWindow(targetId) {
+            document.getElementById(targetId).style.display = "block";
+        }
+        function hideWindow(targetId) {
+            document.getElementById(targetId).style.display = "none";
+        }
+        function inactivateWindow(targetId) {
+            document.getElementById(targetId).firstElementChild.classList.add("inactive");
+        }
+        function activateWindow(targetId) {
+            document.getElementById(targetId).firstElementChild.classList.remove("inactive");
+        }
+        
+        // Drag and Drop
+        // https://q-az.net/elements-drag-and-drop/
+        (function(){
+            
+            //要素の取得
+            var elements = document.getElementsByClassName("drag-and-drop");
+            
+            //要素内のクリックされた位置を取得するグローバル（のような）変数
+            var x;
+            var y;
+            
+            //マウスが要素内で押されたとき、又はタッチされたとき発火
+            for(var i = 0; i < elements.length; i++) {
+                elements[i].addEventListener("mousedown", mdown, false);
+                elements[i].addEventListener("touchstart", mdown, false);
+            }
+            
+            //マウスが押された際の関数
+            function mdown(e) {
+                
+                //クラス名に .drag を追加
+                this.classList.add("drag");
+                
+                //タッチデイベントとマウスのイベントの差異を吸収
+                if(e.type === "mousedown") {
+                    var event = e;
+                } else {
+                    var event = e.changedTouches[0];
+                }
+                
+                //要素内の相対座標を取得
+                x = event.pageX - this.offsetLeft;
+                y = event.pageY - this.offsetTop;
+                
+                //ムーブイベントにコールバック
+                document.body.addEventListener("mousemove", mmove, false);
+                document.body.addEventListener("touchmove", mmove, false);
+            }
+            
+            //マウスカーソルが動いたときに発火
+            function mmove(e) {
+                
+                //ドラッグしている要素を取得
+                var drag = document.getElementsByClassName("drag")[0];
+                
+                //同様にマウスとタッチの差異を吸収
+                if(e.type === "mousemove") {
+                    var event = e;
+                } else {
+                    var event = e.changedTouches[0];
+                }
+                
+                //フリックしたときに画面を動かさないようにデフォルト動作を抑制
+                e.preventDefault();
+                
+                //マウスが動いた場所に要素を動かす
+                drag.style.top = event.pageY - y + "px";
+                drag.style.left = event.pageX - x + "px";
+                
+                //マウスボタンが離されたとき、またはカーソルが外れたとき発火
+                drag.addEventListener("mouseup", mup, false);
+                document.body.addEventListener("mouseleave", mup, false);
+                drag.addEventListener("touchend", mup, false);
+                document.body.addEventListener("touchleave", mup, false);
+                
+            }
+            
+            //マウスボタンが上がったら発火
+            function mup(e) {
+                var drag = document.getElementsByClassName("drag")[0];
+                
+                //ムーブベントハンドラの消去
+                document.body.removeEventListener("mousemove", mmove, false);
+                drag.removeEventListener("mouseup", mup, false);
+                document.body.removeEventListener("touchmove", mmove, false);
+                drag.removeEventListener("touchend", mup, false);
+                
+                //クラス名 .drag も消す
+                drag.classList.remove("drag");
+            }
+            
+        })()
+    </script>
+</body>
+</html>
