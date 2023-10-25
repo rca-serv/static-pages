@@ -1,34 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>98.css example</title>
-  <meta charset="UTF-8" />
-  <link rel="stylesheet" href="https://unpkg.com/98.css" />
-  <style>
-    .popup_window {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-    #window_reload_confirm {
-      display: none;
-    }
-    .group-button {
-        text-align: right;
-    }
-  </style>
+    <title>98.css example</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://unpkg.com/98.css" />
+    <style>
+        .popup_window {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        #window_reload_confirm {
+            display: none;
+        }
+        .group-button {
+            text-align: right;
+        }
+
+        <!--Drag and Drop-->
+        .drag-and-drop {
+            cursor: move;
+            position: absolute;
+            z-index: 1000;
+        }
+
+        .drag {
+            z-index: 1001;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="window" style="margin: 32px;" >
-        <div class="title-bar" id="window_main_title">
+    <div class="window" style="margin: 32px;" id="window_main">
+        <div class="title-bar">
             <div class="title-bar-text">The page you are looking for is currently unavailable.</div>
             <div class="title-bar-controls">
-              <button aria-label="Help" id="button_primary_hint"></button>
-              <button aria-label="Close"></button>
+                <button aria-label="Help" id="button_primary_hint"></button>
+                <button aria-label="Close"></button>
             </div>
-          </div>
+        </div>
         <div class="window-body">
             <p>
                 メッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージ
@@ -38,45 +49,203 @@
             </div>
         </div>
     </div>
-
-    <div class="window popup_window" id="window_reload_confirm">
+    
+    <div class="window popup_window drag-and-drop" id="window_reload_confirm">
         <div class="title-bar">
-          <div class="title-bar-text">
-            98.css
-          </div>
+            <div class="title-bar-text">
+                98.css
+            </div>
         </div>
-    <div class="window-body">
-        <p>めっせーーーーーーーーーーーーーーーーーーーーーーーーじ</p>
-        <div class="group-button">
-            <Button id="button_calcel_reload">Calcel</Button>
-            <Button id="button_comfirm_reload">Continue</Button>
+        <div class="window-body">
+            <p>めっせーーーーーーーーーーーーーーーーーーーーーーーーじ</p>
+            <div class="group-button">
+                <Button id="button_calcel_reload">Calcel</Button>
+                <Button id="button_comfirm_reload">Continue</Button>
+            </div>
         </div>
-    </div>
-    <script>
-        // main window
-        // show confirm window
-        const reload_button = document.getElementById('button_reload');
-        const window_main_title = document.getElementById('window_main_title');
-        const reload_confirm_window = document.getElementById('window_reload_confirm');
-        reload_button.addEventListener('click', () => {
-            reload_confirm_window.style.display = 'block';
-            window_main_title.classList.add('inactive');
-        });
-
-        // confirm window
-        // hide confirm window
-        const button_calcel_reload = document.getElementById('button_calcel_reload');
-        button_calcel_reload.addEventListener('click', () => {
-            reload_confirm_window.style.display = 'none';
-            window_main_title.classList.remove('inactive');
-        });
-
-        // reload
-        const button_comfirm_reload = document.getElementById('button_comfirm_reload');
-        button_comfirm_reload.addEventListener('click', () => {
-            location.reload();
-        });
-
-    </script>
-</body>
-</html>
+        
+        <!-- MEMO
+            - Windowの最初の子要素はTitileである必要あり
+        -->
+        <script>
+            
+            // 要素の取得
+            const buttons = {
+                primary_hint: document.getElementById("button_primary_hint"),
+                show_reload: document.getElementById("button_reload"),
+                cancel_reload: document.getElementById("button_calcel_reload"),
+                confirm_reload: document.getElementById("button_comfirm_reload")
+            }
+            
+            // イベントの設定
+            // メインウィンドウ
+            // リロードウィンドウの表示
+            buttons.show_reload.addEventListener("click", function() {
+                windows.reload_confirm.show();
+                windows.main.inactivate();
+                windows.reload_confirm.activate();
+            });
+            // ヒントボタン
+            buttons.primary_hint.addEventListener("click", function() {
+                console.log("HINT");
+            });
+            
+            // リロードウィンドウ
+            // Cancelボタン
+            buttons.cancel_reload.addEventListener("click", function() {
+                windows.reload_confirm.hide();
+                windows.main.activate();
+                windows.reload_confirm.inactivate();
+            });
+            // Confirmボタン
+            buttons.confirm_reload.addEventListener("click", function() {
+                location.reload();
+            });
+            
+            
+            // ウィンドウ管理
+            let windows = {
+                main: {
+                    id: "window_main",
+                    show: function() {
+                        showWindow(this.id);
+                    },
+                    hide: function() {
+                        hideWindow(this.id);
+                    },
+                    inactivate: function() {
+                        inactivateWindow(this.id);
+                        window_status.window_main.is_active = false;
+                    },
+                    activate: function() {
+                        activateWindow(this.id);
+                        window_status.window_main.is_active = true;
+                    }
+                },
+                reload_confirm: {
+                    id: "window_reload_confirm",
+                    show: function() {
+                        showWindow(this.id);
+                    },
+                    hide: function() {
+                        hideWindow(this.id);
+                    },
+                    inactivate: function() {
+                        inactivateWindow(this.id);
+                        window_status.window_reload_confirm.is_active = false;
+                    },
+                    activate: function() {
+                        activateWindow(this.id);
+                        window_status.window_reload_confirm.is_active = true;
+                    }
+                }
+            }
+            
+            let window_status = {
+                window_main: {
+                    is_active: true
+                },
+                window_reload_confirm: {
+                    is_active: false
+                }
+            }
+            
+            function showWindow(targetId) {
+                document.getElementById(targetId).style.display = "block";
+            }
+            function hideWindow(targetId) {
+                document.getElementById(targetId).style.display = "none";
+            }
+            function inactivateWindow(targetId) {
+                document.getElementById(targetId).firstElementChild.classList.add("inactive");
+            }
+            function activateWindow(targetId) {
+                document.getElementById(targetId).firstElementChild.classList.remove("inactive");
+            }
+            
+            // Drag and Drop
+            // https://q-az.net/elements-drag-and-drop/
+            (function(){
+                
+                //要素の取得
+                var elements = document.getElementsByClassName("drag-and-drop");
+                
+                //要素内のクリックされた位置を取得するグローバル（のような）変数
+                var x;
+                var y;
+                
+                //マウスが要素内で押されたとき、又はタッチされたとき発火
+                for(var i = 0; i < elements.length; i++) {
+                    elements[i].addEventListener("mousedown", mdown, false);
+                    elements[i].addEventListener("touchstart", mdown, false);
+                }
+                
+                //マウスが押された際の関数
+                function mdown(e) {
+                    
+                    //クラス名に .drag を追加
+                    this.classList.add("drag");
+                    
+                    //タッチデイベントとマウスのイベントの差異を吸収
+                    if(e.type === "mousedown") {
+                        var event = e;
+                    } else {
+                        var event = e.changedTouches[0];
+                    }
+                    
+                    //要素内の相対座標を取得
+                    x = event.pageX - this.offsetLeft;
+                    y = event.pageY - this.offsetTop;
+                    
+                    //ムーブイベントにコールバック
+                    document.body.addEventListener("mousemove", mmove, false);
+                    document.body.addEventListener("touchmove", mmove, false);
+                }
+                
+                //マウスカーソルが動いたときに発火
+                function mmove(e) {
+                    
+                    //ドラッグしている要素を取得
+                    var drag = document.getElementsByClassName("drag")[0];
+                    
+                    //同様にマウスとタッチの差異を吸収
+                    if(e.type === "mousemove") {
+                        var event = e;
+                    } else {
+                        var event = e.changedTouches[0];
+                    }
+                    
+                    //フリックしたときに画面を動かさないようにデフォルト動作を抑制
+                    e.preventDefault();
+                    
+                    //マウスが動いた場所に要素を動かす
+                    drag.style.top = event.pageY - y + "px";
+                    drag.style.left = event.pageX - x + "px";
+                    
+                    //マウスボタンが離されたとき、またはカーソルが外れたとき発火
+                    drag.addEventListener("mouseup", mup, false);
+                    document.body.addEventListener("mouseleave", mup, false);
+                    drag.addEventListener("touchend", mup, false);
+                    document.body.addEventListener("touchleave", mup, false);
+                    
+                }
+                
+                //マウスボタンが上がったら発火
+                function mup(e) {
+                    var drag = document.getElementsByClassName("drag")[0];
+                    
+                    //ムーブベントハンドラの消去
+                    document.body.removeEventListener("mousemove", mmove, false);
+                    drag.removeEventListener("mouseup", mup, false);
+                    document.body.removeEventListener("touchmove", mmove, false);
+                    drag.removeEventListener("touchend", mup, false);
+                    
+                    //クラス名 .drag も消す
+                    drag.classList.remove("drag");
+                }
+                
+            })()
+        </script>
+    </body>
+    </html>
+    
