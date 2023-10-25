@@ -238,7 +238,7 @@
                 activate: function() {
                     activateWindow(this.id);
                     window_status.window_reload_confirm.is_active = true;
-                    setTopWindow(this.id);
+                    //setTopWindow(this.id);
                 }
             },
             hint: {
@@ -256,7 +256,7 @@
                 activate: function() {
                     activateWindow(this.id);
                     window_status.window_hint.is_active = true;
-                    setTopWindow(this.id);
+                    //setTopWindow(this.id);
                 }
             }
         }
@@ -292,7 +292,25 @@
         function setTopWindow(window_id) {
             active_window_history.push(window_id);
             document.getElementById(window_id).style.zIndex = active_window_history.length;
-            console.log(active_window_history)
+            
+            // 暫定処置(決め打ちなので　)
+            switch(window_id) {
+                case "window_main":
+                    windows.reload_confirm.inactivate();
+                    windows.hint.inactivate();
+                    windows.main.activate();
+                    break;
+                case "window_reload_confirm":
+                    windows.main.inactivate();
+                    windows.hint.inactivate();
+                    windows.reload_confirm.activate();
+                    break;
+                case "window_hint":
+                    windows.main.inactivate();
+                    windows.reload_confirm.inactivate();
+                    windows.hint.activate();
+                    break;
+            }
         }
 
         // ウィンドウ状態管理
