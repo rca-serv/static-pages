@@ -52,6 +52,11 @@
             <p id="body_error">
                 An error occurred while processing your request. <!--JSから書き換える(それすら出来ない場合はこれがそのまま表示される？)-->
             </p>
+            <p>
+                Debug Info
+                <ul id="ulist_debug_info">
+                </ul>
+            </p>
             <div class="group-button">
                 <Button id="button_reload">Reload</Button>
             </div>
@@ -123,7 +128,15 @@
         // - 非アクティブであるべきウィンドウがアクティブになることがある
         // - 表示優先度が異常なのでなんとかする
 
+        window.onload = function() {
+            // デバッグ情報作成
+            createDebugInfo();
+        } 
         
+        // 定数(任意)
+        const ERROR_PAGE_WORKING_HOST_NAME = "debug_debug";
+        const ERROR_REPORTED_HOST = "ReverseProxy(Vultr-Primary)";
+
         // 要素の取得
         const buttons = {
             primary_hint: document.getElementById("button_primary_hint"),
@@ -240,6 +253,32 @@
                     setTopWindow(this.id);
                 }
             }
+        }
+        
+        // デバッグ情報作成
+        function createDebugInfo() {
+            // パス
+            insertDebugInfo("Path: " + location.pathname);
+            // ホスト
+            insertDebugInfo("Host: " + location.host);
+            // プロトコル
+            insertDebugInfo("Protocol: " + location.protocol);
+            // ポート
+            insertDebugInfo("Port: " + location.port);
+            
+            // デバイス情報
+            insertDebugInfo("Device: " + navigator.userAgent);
+
+            // 定数
+            insertDebugInfo("This page is hosted by: " + ERROR_PAGE_WORKING_HOST_NAME);
+            insertDebugInfo("Error catched at: " + ERROR_REPORTED_HOST);
+        }
+        // デバッグ情報挿入
+        function insertDebugInfo(info) {
+            let ulist = document.getElementById("ulist_debug_info");
+            let li = document.createElement("li");
+            li.textContent = info;
+            ulist.appendChild(li);
         }
         
         // ウィンドウ表示優先度管理
