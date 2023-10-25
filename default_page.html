@@ -45,7 +45,7 @@
             <div class="title-bar-text">The page you are looking for is currently unavailable.</div>
             <div class="title-bar-controls">
                 <button aria-label="Help" id="button_primary_hint"></button>
-                <button aria-label="Close"></button>
+                <button aria-label="Close" id="button_primary_close"></button>
             </div>
         </div>
         <div class="window-body">
@@ -63,6 +63,9 @@
             <div class="title-bar-text">
                 98.css
             </div>
+            <div class="title-bar-controls">
+                <button aria-label="Close" id="button_reload_confirm_close"></button>
+            </div>  
         </div>
         <div class="window-body">
             <p>めっせーーーーーーーーーーーーーーーーーーーーーーーーじ</p>
@@ -77,6 +80,9 @@
         <div class="title-bar">
             <div class="title-bar-text">
                 98.css
+            </div>
+            <div class="title-bar-controls">
+                <button aria-label="Close" id="button_hint_close"></button>
             </div>
         </div>
         <div class="window-body">
@@ -99,7 +105,10 @@
             primary_hint: document.getElementById("button_primary_hint"),
             show_reload: document.getElementById("button_reload"),
             cancel_reload: document.getElementById("button_calcel_reload"),
-            confirm_reload: document.getElementById("button_comfirm_reload")
+            confirm_reload: document.getElementById("button_comfirm_reload"),
+            primary_close: document.getElementById("button_primary_close"),
+            reload_confirm_close: document.getElementById("button_reload_confirm_close"),
+            hint_close: document.getElementById("button_hint_close")
         }
         
         // イベントの設定
@@ -115,9 +124,12 @@
             windows.hint.show();
             windows.main.inactivate();
             windows.hint.activate();
-
         });
-        
+        // Closeボタン
+        buttons.primary_close.addEventListener("click", function() {
+            closeMe();
+        });
+
         // リロードウィンドウ
         // Cancelボタン
         buttons.cancel_reload.addEventListener("click", function() {
@@ -129,8 +141,21 @@
         buttons.confirm_reload.addEventListener("click", function() {
             location.reload();
         });
+        // closeボタン
+        buttons.reload_confirm_close.addEventListener("click", function() {
+            windows.reload_confirm.hide();
+            windows.main.activate();
+            windows.reload_confirm.inactivate();
+        });
         
         // ヘルプウィンドウ
+        // Closeボタン
+        buttons.hint_close.addEventListener("click", function() {
+            windows.hint.hide();
+            windows.main.activate();
+            windows.hint.inactivate();
+        });
+        
         
         // ウィンドウ
         let windows = {
@@ -224,6 +249,10 @@
             document.getElementById(targetId).firstElementChild.classList.remove("inactive");
         }
         
+        function closeMe() {
+            window.open('about:blank','_self').close();
+        }
+
         // Drag and Drop
         // https://q-az.net/elements-drag-and-drop/
         (function(){
