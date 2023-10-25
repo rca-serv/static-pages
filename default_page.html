@@ -49,29 +49,34 @@
             </div>
         </div>
         <div class="window-body">
-            <p>
-                メッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージ
+            <p id="body_error">
+                An error occurred while processing your request. <!--JSから書き換える(それすら出来ない場合はこれがそのまま表示される？)-->
             </p>
             <div class="group-button">
-                <Button id="button_reload">あああああああああ</Button>
+                <Button id="button_reload">Reload</Button>
             </div>
+        </div>
+        <div class="status-bar">
+            <p class="status-bar-field">PlaceHolder</p>
         </div>
     </div>
     
     <div class="window popup_window drag-and-drop" id="window_reload_confirm">
         <div class="title-bar">
             <div class="title-bar-text">
-                98.css
+                Reload site?
             </div>
             <div class="title-bar-controls">
                 <button aria-label="Close" id="button_reload_confirm_close"></button>
             </div>  
         </div>
         <div class="window-body">
-            <p>めっせーーーーーーーーーーーーーーーーーーーーーーーーじ</p>
+            <p>
+                Changes you made may not be saved.
+            </p>
             <div class="group-button">
-                <Button id="button_calcel_reload">Calcel</Button>
-                <Button id="button_comfirm_reload">Continue</Button>
+                <Button id="button_calcel_reload">Cancel</Button>
+                <Button id="button_comfirm_reload">Reload</Button>
             </div>
         </div>
     </div>
@@ -79,14 +84,27 @@
     <div class="window popup_window drag-and-drop" id="window_hint">
         <div class="title-bar">
             <div class="title-bar-text">
-                98.css
+                Help
             </div>
             <div class="title-bar-controls">
                 <button aria-label="Close" id="button_hint_close"></button>
             </div>
         </div>
         <div class="window-body">
-            <p>ヘルプウィンドああああああああああああああああああうううううううううう</p>
+            <p>
+                This page currently unavailable.
+            </p>
+            <ul>
+                <li>
+                    Please make sure you are accessing the correct address.
+                </li>
+                <li>
+                    Check your network connection.
+                </li>
+                <li>
+                    Check the <a herf="https://stats.uptimerobot.com/0PprztJm5r">uptimerebot status page.</a>
+                </li>
+            </ul>
         </div>  
     </div>
     
