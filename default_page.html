@@ -131,7 +131,13 @@
         window.onload = function() {
             // デバッグ情報作成
             createDebugInfo();
+
+            // フッター内容更新
+            document.getElementsByClassName("status-bar-field")[0].textContent = ERROR_CODE;
         } 
+
+        // エラーコード
+        const ERROR_CODE = "404: Not Found"
         
         // 定数(任意)
         const ERROR_PAGE_WORKING_HOST_NAME = "debug_debug";
