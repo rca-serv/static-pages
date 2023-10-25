@@ -14,7 +14,11 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
+        /* TODO: 書き方を変えるべきかも */
         #window_reload_confirm {
+            display: none;
+        }
+        #window_hint {
             display: none;
         }
         .group-button {
@@ -83,6 +87,11 @@
         - Windowの最初の子要素はTitileである必要あり
     -->
     <script>
+
+        //TODOs
+        // - 非アクティブであるべきウィンドウがアクティブになることがある
+        // - 表示優先度が異常なのでなんとかする
+
         
         // 要素の取得
         const buttons = {
@@ -105,7 +114,7 @@
             windows.hint.show();
             windows.main.inactivate();
             windows.hint.activate();
-            
+
         });
         
         // リロードウィンドウ
@@ -121,7 +130,6 @@
         });
         
         // ヘルプウィンドウ
-
         
         // ウィンドウ
         let windows = {
@@ -157,6 +165,7 @@
                 activate: function() {
                     activateWindow(this.id);
                     window_status.window_reload_confirm.is_active = true;
+                    setTopWindow(this.id);
                 }
             },
             hint: {
@@ -174,10 +183,19 @@
                 activate: function() {
                     activateWindow(this.id);
                     window_status.window_hint.is_active = true;
+                    setTopWindow(this.id);
                 }
             }
         }
         
+        // ウィンドウ表示優先度管理
+        let active_window_history = [];
+        function setTopWindow(window_id) {
+            active_window_history.push(window_id);
+            document.getElementById(window_id).style.zIndex = active_window_history.length;
+            console.log(active_window_history)
+        }
+
         // ウィンドウ状態管理
         let window_status = {
             window_main: {
@@ -246,9 +264,14 @@
             
             //マウスカーソルが動いたときに発火
             function mmove(e) {
-                
+
                 //ドラッグしている要素を取得
                 var drag = document.getElementsByClassName("drag")[0];
+                                
+                // Modified by rca (追加部分)
+                setTopWindow(drag.id);
+                // --------------------
+                
                 
                 //同様にマウスとタッチの差異を吸収
                 if(e.type === "mousemove") {
@@ -285,7 +308,6 @@
                 //クラス名 .drag も消す
                 drag.classList.remove("drag");
             }
-            
         })()
     </script>
 </body>
