@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>98.css example</title>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="https://unpkg.com/98.css" />
+  <style>
+    .popup_window {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    #window_reload_confirm {
+      display: none;
+    }
+    .group-button {
+        text-align: right;
+    }
+  </style>
+</head>
+
+<body>
+    <div class="window" style="margin: 32px;" >
+        <div class="title-bar" id="window_main_title">
+            <div class="title-bar-text">The page you are looking for is currently unavailable.</div>
+            <div class="title-bar-controls">
+              <button aria-label="Help" id="button_primary_hint"></button>
+              <button aria-label="Close"></button>
+            </div>
+          </div>
+        <div class="window-body">
+            <p>
+                メッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージ
+            </p>
+            <div class="group-button">
+                <Button id="button_reload">あああああああああ</Button>
+            </div>
+        </div>
+    </div>
+
+    <div class="window popup_window" id="window_reload_confirm">
+        <div class="title-bar">
+          <div class="title-bar-text">
+            98.css
+          </div>
+        </div>
+    <div class="window-body">
+        <p>めっせーーーーーーーーーーーーーーーーーーーーーーーーじ</p>
+        <div class="group-button">
+            <Button id="button_calcel_reload">Calcel</Button>
+            <Button id="button_comfirm_reload">Continue</Button>
+        </div>
+    </div>
+    <script>
+        // main window
+        // show confirm window
+        const reload_button = document.getElementById('button_reload');
+        const window_main_title = document.getElementById('window_main_title');
+        const reload_confirm_window = document.getElementById('window_reload_confirm');
+        reload_button.addEventListener('click', () => {
+            reload_confirm_window.style.display = 'block';
+            window_main_title.classList.add('inactive');
+        });
+
+        // confirm window
+        // hide confirm window
+        const button_calcel_reload = document.getElementById('button_calcel_reload');
+        button_calcel_reload.addEventListener('click', () => {
+            reload_confirm_window.style.display = 'none';
+            window_main_title.classList.remove('inactive');
+        });
+
+        // reload
+        const button_comfirm_reload = document.getElementById('button_comfirm_reload');
+        button_comfirm_reload.addEventListener('click', () => {
+            location.reload();
+        });
+
+    </script>
+</body>
+</html>
