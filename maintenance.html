@@ -222,17 +222,16 @@
     position: fixed;
     top: 0;
     right: 0;
-    background-color: #000;
-    color: #fff;
-    padding: 10px;
-    text-decoration: none;
-    transform: rotate(-45deg);
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 0.8rem;
+    border-radius: 0 0 0 24px;
   }
 
   #github-link img {
-    width: 20px;
-    height: 20px;
-    margin-right: 5px;
+    vertical-align: middle;
+    width: 40px;
+    height: 40px;
   }
 
 
@@ -262,7 +261,6 @@
 
   <a href="https://github.com" id="github-link">
     <img src="github.png" alt="GitHub">
-    GitHub
   </a>
 
 
