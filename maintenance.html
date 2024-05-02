@@ -86,7 +86,8 @@
     display: none; /* 通常時は非表示 */
   }
 
-  @media (max-aspect-ratio: 3/1) {
+  /* 画面が横長の場合 */
+  @media screen and (min-aspect-ratio: 5/3) {
 
     .image_container {
       display: block;
@@ -113,6 +114,36 @@
       right: 10%;
       width: 40%;
       transform: translate(0, -40%);
+    }
+  }
+
+  /* 画面が縦長の場合 */
+  @media screen and (max-aspect-ratio: 4/5) {
+    .image_container {
+      display: block;
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%, 25%);
+      z-index: 0;
+      /*shadow*/
+    }
+
+    .image_container img {
+      width: 100%;
+      height: auto;
+      /*shadow*/
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.9);
+    }
+
+    /* 背景をぼかす */
+    .background img {
+      filter: blur(8px) brightness(0.8);
+    }
+
+    /* 情報を表示するコンテナを下側に表示 */
+    .container {
+      width: 80%;
+      transform: translate(-50%, 20%);
     }
   }
 
