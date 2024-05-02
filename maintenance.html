@@ -72,7 +72,7 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 10%);
     width: 75%;
     z-index: 1;
     background-color: rgba(255, 255, 255, 0.8);
@@ -82,15 +82,31 @@
     padding-top: 1rem;
   }
 
-  .container.left-split {
-    left: 0%;
-    width: 50%;
-    background-color: rgba(255, 255, 255, 0.6); /* 左側の背景色を薄く */
+  .image_container {
+    display: none; /* 通常時は非表示 */
   }
 
-  .container.right-split {
-    right: 0%;
-    width: 50%;
+  @media (max-aspect-ratio: 3/1) {
+
+    .image_container {
+      display: block;
+      position: absolute;
+      transform: translate(10%, 20%);
+      z-index: 0;
+      /*shadow*/
+    }
+
+    .image_container img {
+      width: 60%;
+      height: auto;
+      /*shadow*/
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.9);
+    }
+
+    /* 背景をぼかす */
+    .background img {
+      filter: blur(5px);
+    }
   }
 
   h1 {
@@ -117,20 +133,20 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 120vw; /* 画面の横幅に合わせる */
+    height: 120vh; /* 画面の高さに合わせる */
     z-index: 0;
-    overflow: hidden;
-    filter: blur(10px); /* 背景をぼかす */
+    overflow: hidden; /* 画面外の画像を隠す */
   }
 
   .background img {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* 画像が背景にピッタリ収まるように */
+    top: -10vh;
+    left: -10vw;
+    width: auto;
+    height: auto;
+    min-width: 100%;
+    min-height: 100%;
   }
 
   /* 追加された部分 */
@@ -161,39 +177,6 @@
     /*グレーにするカラーフィルター*/
     filter: invert(90%);
   }
-
-  @media (min-aspect-ratio: 3/2) {
-    /* 画面が横長の場合 */
-    .container {
-      width: 50%;
-      left: 50%;
-    }
-
-    .container.left-split {
-      width: 50%;
-    }
-
-    .container.right-split {
-      width: 50%;
-    }
-  }
-
-  @media (max-aspect-ratio: 3/2) {
-    /* 画面が縦長の場合 */
-    .container {
-      width: 75%;
-      left: 50%;
-    }
-
-    .container.left-split {
-      width: 100%;
-    }
-
-    .container.right-split {
-      width: 100%;
-    }
-  }
-
 </style>
 </head>
 <body>
@@ -202,20 +185,20 @@
     <img src="" alt="Background Image" id="bgImage"> <!-- ランダムな背景画像を表示するための要素 -->
   </div>
 
-  <div class="container left-split">
+  <div class="image_container">
+    <img src="bg_1.jpg" alt="Background Image" id="bgBox"> <!-- ランダムな背景画像を表示するための要素 -->
+  </div>
+
+  <div class="container">
     <h1>メンテナンス中</h1>
     <p>現在メンテナンス中です。<br>完了までしばらくお待ちください</p>
     <div id="countdown"></div>
   </div>
 
-  <div class="container right-split">
-    <!-- 追加された部分 -->
-    <div class="fab" onclick="window.location.reload();">
-      <!--reload.svg読み込み-->
-      <img src="reload.svg" alt="Reload" width="24" height="24">
-    </div>
-    <!-- ChatGPTとBingAIが作成 -->
-    <p style="position: fixed; bottom: 10px; left: 20px; background-color: #ff6699; padding: 1rem; color: #F0F0F0; max-width: 60%; border-radius: 12px;">ほぼChatGPTとBingAIがつくってくれたメンテナスページ</p>
+  <!-- 追加された部分 -->
+  <div class="fab" onclick="window.location.reload();">
+    <!--reload.svg読み込み-->
+    <img src="reload.svg" alt="Reload" width="24" height="24">
   </div>
 
   <script>
@@ -226,7 +209,7 @@
       'bg_3.jpg',
     ];
 
-    // メンテナンス終了日時を設定します。ご自身のメンテナス終了日時に置き換えてください。
+    // メンテナンス終了日時を設定します。ご自身のメンテナンス終了日時に置き換えてください。
     var maintenanceEnd = new Date('2024-05-03T08:00:00Z');
 
     function updateCountdown() {
@@ -242,7 +225,7 @@
 
       if (distance < 0) {
         clearInterval(countdownInterval);
-        document.getElementById("countdown").innerHTML = "メンテナス終了";
+        document.getElementById("countdown").innerHTML = "メンテナンス終了";
       }
     }
 
@@ -262,7 +245,10 @@
       var randomIndex = Math.floor(Math.random() * backgroundImages.length);
       var randomImage = backgroundImages[randomIndex];
       document.getElementById('bgImage').src = randomImage;
+      document.getElementById('bgBox').src = randomImage; // 横長/縦長時に空白に置くコンテナ
     });
   </script>
+  <!-- ChatGPTとBingAIが作成 -->
+  <p style="position: fixed; bottom: 10px; left: 20px; background-color: #ff6699; padding: 1rem; color: #F0F0F0; max-width: 60%; border-radius: 12px;">ほぼChatGPTとBingAIがつくってくれたメンテナンスページ</p>
 </body>
 </html>
