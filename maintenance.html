@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>メンテナンス中</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Noto Sans JP', sans-serif;
+    overflow: hidden;
+  }
+
+  .container {
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 75%;
+    z-index: 1;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 15px;
+    /*shadow*/
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+    padding-top: 1rem;
+  }
+
+  h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: #ff6699;
+  }
+
+  p {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #666;
+  }
+
+  #countdown {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ff6699;
+    margin-bottom: 2rem;
+  }
+
+  .background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 120vw; /* 画面の横幅に合わせる */
+  height: 120vh; /* 画面の高さに合わせる */
+  z-index: 0;
+  overflow: hidden; /* 画面外の画像を隠す */
+}
+
+.background img {
+  position: absolute;
+  top: -10vh;
+  left: -10vw;
+  width: auto;
+  height: auto;
+  min-width: 100%;
+  min-height: 100%;
+}
+
+  /* 追加された部分 */
+  .sns-link {
+    margin-top: 10px;
+    margin-bottom: 3rem;
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .sns-link a {
+    display: inline-block;
+    background-color: #ff6699;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    min-width: 10em;
+    box-sizing: border-box; /* パディングも含めたボタンの幅を設定 */
+  }
+
+  .sns-link a:hover {
+    background-color: #ff3366;
+  }
+</style>
+</head>
+<body>
+  <!-- 背景の要素 -->
+  <div class="background">
+    <img src="" alt="Background Image" id="bgImage"> <!-- ランダムな背景画像を表示するための要素 -->
+  </div>
+
+  <div class="container">
+    <h1>メンテナンス中</h1>
+    <p>現在メンテナンス中です。<br>完了までしばらくお待ちください</p>
+    <div id="countdown"></div>
+    <!-- 追加された部分 -->
+    <div class="sns-link">
+      <a href="#" id="simkey">simkey.net</a>
+      <a href="#" id="misskey_io">misskey.io</a>
+    </div>
+  </div>
+
+  <script>
+    // 背景画像のリスト
+    var backgroundImages = [
+      'bg_1.jpg',
+      'bg_2.jpg',
+      'bg_3.jpg',
+    ];
+
+    // メンテナンス終了日時を設定します。ご自身のメンテナンス終了日時に置き換えてください。
+    var maintenanceEnd = new Date('2024-05-03T08:00:00Z');
+
+    function updateCountdown() {
+      var now = new Date().getTime();
+      var distance = maintenanceEnd - now;
+
+      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById("countdown").innerHTML = "終了まで: " + days + "日 " + hours + "時間 " + minutes + "分 " + seconds + "秒 (予定)";
+
+      if (distance < 0) {
+        clearInterval(countdownInterval);
+        document.getElementById("countdown").innerHTML = "メンテナンス終了";
+      }
+    }
+
+    var countdownInterval = setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // マウスの位置に応じて背景画像を移動させる
+    var background = document.querySelector('.background img');
+    window.addEventListener('mousemove', function(e) {
+      var moveX = (e.clientX / window.innerWidth) * 20 - 10; // X方向の移動量
+      var moveY = (e.clientY / window.innerHeight) * 20 - 10; // Y方向の移動量
+      background.style.transform = 'translate(' + moveX + 'px, ' + moveY + 'px)';
+    });
+
+    // ページロード時にランダムな背景画像を表示する
+    window.addEventListener('load', function() {
+      var randomIndex = Math.floor(Math.random() * backgroundImages.length);
+      var randomImage = backgroundImages[randomIndex];
+      document.getElementById('bgImage').src = randomImage;
+    });
+  </script>
+  <!-- ChatGPTとBingAIが作成 -->
+  <p style="position: fixed; bottom: 10px; left: 10px;">Created by ChatGPT and BingAI</p>
+</body>
+</html>
