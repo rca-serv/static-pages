@@ -183,10 +183,10 @@
     position: absolute;
     top: -10vh;
     left: -10vw;
-    width: auto;
-    height: auto;
-    min-width: 100%;
-    min-height: 100%;
+    /* 画面を埋められるなかで一番大きく表示するように */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   /* 追加された部分 */
