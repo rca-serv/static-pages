@@ -192,30 +192,21 @@
   /* 追加された部分 */
   .fab {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #ff6699;
-    color: white;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    bottom: 0;
+    right: 0;
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 1.2rem;
+    border-radius: 24px 0 0 0;
     transition: background-color 0.3s ease;
   }
 
-  .fab:hover {
-    background-color: #ff3366;
-  }
 
   .fab img {
-    width: 24px;
-    height: 24px;
+    width: 25px;
+    height: 25px;
     /*グレーにするカラーフィルター*/
-    filter: invert(90%);
+    filter: invert(20%);
   }
 
   #github-link {
