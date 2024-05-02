@@ -217,6 +217,25 @@
     /*グレーにするカラーフィルター*/
     filter: invert(90%);
   }
+
+  #github-link {
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-color: #000;
+    color: #fff;
+    padding: 10px;
+    text-decoration: none;
+    transform: rotate(-45deg);
+  }
+
+  #github-link img {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+  }
+
+
 </style>
 </head>
 <body>
@@ -240,6 +259,12 @@
     <!--reload.svg読み込み-->
     <img src="reload.svg" alt="Reload" width="24" height="24">
   </div>
+
+  <a href="https://github.com" id="github-link">
+    <img src="github.png" alt="GitHub">
+    GitHub
+  </a>
+
 
   <script>
     // 背景画像のリスト
